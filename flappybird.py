@@ -6,6 +6,7 @@ import sys
 import random
 from c_button import PygButton
 
+
 class FlappyBird:
     def __init__(self):
         self.screen = pygame.display.set_mode((400, 708))
