@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import pygame
 from pygame.locals import *  # noqa
 import sys
@@ -20,7 +18,10 @@ class FlappyBird:
         self.wallDown1 = pygame.image.load("assets/top.png").convert_alpha()
         self.wallUp2 = pygame.image.load("assets/bottom.png").convert_alpha()
         self.wallDown2 = pygame.image.load("assets/top.png").convert_alpha()
-        self.replay = PygButton((99, 438, 299, 512), normal="assets/Replay_n.png", down="assets/Replay_d.png", highlight="assets/Replay_h.png")
+        self.replay = PygButton((99, 438, 299, 512),
+                                normal="assets/Replay_n.png",
+                                down="assets/Replay_d.png",
+                                highlight="assets/Replay_h.png")
         self.replay._propSetVisible(False)
         self.gap = 130
         self.wallx = 400
@@ -47,7 +48,7 @@ class FlappyBird:
         self.hit = True
         self.c_color = (255, 140, 0)
         self.stop = False
-    
+
     def updateWalls(self):
         self.wallx -= 4
         self.wallx2 -= 4
@@ -57,7 +58,7 @@ class FlappyBird:
         if self.wallx2 < -83:
             self.wallx2 = 456
             self.offset2 = random.randint(-110, 110)
-    
+
     def birdUpdate(self):
         if self.jump:
             self.jumpSpeed -= 1
@@ -82,17 +83,18 @@ class FlappyBird:
                                self.wallDown1.get_width() - 10,
                                self.wallDown1.get_height() + 304)
         upRect2 = pygame.Rect(self.wallx2 + 3,
-                             360 + self.gap - self.offset2 + 10,
-                             self.wallUp2.get_width() - 10,
-                             self.wallUp2.get_height())
+                              360 + self.gap - self.offset2 + 10,
+                              self.wallUp2.get_width() - 10,
+                              self.wallUp2.get_height())
         downRect2 = pygame.Rect(self.wallx2 + 3,
-                               -300 - self.gap - self.offset2 - 10,
-                               self.wallDown2.get_width() - 10,
-                               self.wallDown2.get_height() + 304)
-        if (upRect.colliderect(self.bird) or upRect2.colliderect(self.bird)) and not(self.dead) and self.hit:
+                                -300 - self.gap - self.offset2 - 10,
+                                self.wallDown2.get_width() - 10,
+                                self.wallDown2.get_height() + 304)
+        if((upRect.colliderect(self.bird) or upRect2.colliderect(self.bird))and
+           not(self.dead) and self.hit):
             self.dead = True
             self.replay._propSetVisible(True)
-            if self.hit == True:
+            if self.hit is True:
                 self.jump = 17
                 self.gravity = 5
                 self.jumpSpeed = 10
@@ -101,10 +103,11 @@ class FlappyBird:
                 self.jump_s.stop()
                 self.hit_s.play()
                 self.hit = False
-        if (downRect.colliderect(self.bird) or downRect2.colliderect(self.bird)) and not(self.dead) and self.hit:
+        if(not(self.dead) and self.hit and (downRect.colliderect(self.bird) or
+                                            downRect2.colliderect(self.bird))):
             self.dead = True
             self.replay._propSetVisible(True)
-            if self.hit == True:
+            if self.hit is True:
                 self.jump = 17
                 self.gravity = 5
                 self.jumpSpeed = 10
@@ -125,7 +128,8 @@ class FlappyBird:
                 self.jump_s.stop()
                 self.point_s.play()
                 if self.counter % 10 == 0:
-                    self.c_color = tuple((int(x) + 20) % 256 for x in self.c_color)
+                    self.c_color = tuple((int(x) + 20) % 256 for x in
+                                         self.c_color)
         self.replay.draw(self.screen)
 
     def run(self):
@@ -137,9 +141,12 @@ class FlappyBird:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                if(event.type == pygame.KEYDOWN and
+                   event.key == pygame.K_ESCAPE):
                     self.stop = True if not(self.stop) else False
-                elif self.dead and not self.stop and event.type in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN) and self.replay._propGetVisible():
+                elif((self.dead and not self.stop and event.type in
+                     (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN) and
+                     self.replay._propGetVisible())):
                     react = self.replay.handleEvent(event)
                     if 'click' in react:
                         self.bird[1] = 50
@@ -153,9 +160,10 @@ class FlappyBird:
                         self.offset2 = random.randint(-110, 110)
                         self.gravity = 5
                         self.c_color = (255, 140, 0)
-                elif(not(self.stop) and (event.type == pygame.KEYDOWN
-                                         or event.type == pygame.MOUSEBUTTONDOWN)
-                     and not self.dead):
+                elif((not(self.stop) and
+                     (event.type == pygame.KEYDOWN or
+                      event.type == pygame.MOUSEBUTTONDOWN) and not
+                     self.dead)):
                     self.jump = 17
                     self.gravity = 5
                     self.jumpSpeed = 10
@@ -186,7 +194,8 @@ class FlappyBird:
                 if not(self.stop):
                     self.updateWalls()
             if not(self.stop):
-                self.screen.blit(self.birdSprites[self.sprite], (70, self.birdY))
+                self.screen.blit(self.birdSprites[self.sprite],
+                                 (70, self.birdY))
                 self.birdUpdate()
                 pygame.display.update()
                 self.replay._update()
