@@ -6,7 +6,6 @@ import sys
 import random
 from c_button import PygButton
 
-
 class FlappyBird:
     def __init__(self):
         self.screen = pygame.display.set_mode((400, 708))
@@ -47,8 +46,7 @@ class FlappyBird:
         self.hit = True
         self.c_color = (255, 140, 0)
         self.stop = False
-        
-
+    
     def updateWalls(self):
         self.wallx -= 4
         self.wallx2 -= 4
@@ -58,7 +56,7 @@ class FlappyBird:
         if self.wallx2 < -83:
             self.wallx2 = 456
             self.offset2 = random.randint(-110, 110)
-
+    
     def birdUpdate(self):
         if self.jump:
             self.jumpSpeed -= 1
@@ -192,6 +190,7 @@ class FlappyBird:
                 pygame.display.update()
                 self.replay._update()
                 self.replay.draw(self.screen)
+
 
 if __name__ == "__main__":
     FlappyBird().run()
